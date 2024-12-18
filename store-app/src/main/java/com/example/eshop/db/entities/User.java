@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "User")
+@Table(name = "users") // Use "orders" instead of "order", since is a reserved keyword.
 public class User extends AbstractEntity {
 
     /**

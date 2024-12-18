@@ -13,6 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity(name = "Order")
+@Table(name = "orders") // Use "orders" instead of "order", since is a reserved keyword.
 public class Order extends AbstractEntity {
     /**
      * The unique identifier for the entity.
