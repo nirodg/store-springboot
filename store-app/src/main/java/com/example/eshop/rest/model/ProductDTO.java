@@ -1,12 +1,14 @@
 package com.example.eshop.rest.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
-public class ProductDTO {
-    private Long id;
+@Getter
+@Setter
+public class ProductDTO extends AbstractEntityDTO {
     private String name;
     private String description;
     private BigDecimal price;

@@ -5,8 +5,9 @@ import com.example.eshop.db.entities.Product;
 import com.example.eshop.rest.model.ProductDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductMapper {
 
 //    @Mapping(source = "category.id", target = "categoryId")

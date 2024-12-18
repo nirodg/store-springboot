@@ -2,6 +2,8 @@ package com.example.eshop.db.common;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -11,8 +13,9 @@ import java.util.Date;
  * including an identifier and timestamps for creation and updates.
  */
 @MappedSuperclass
-@Data
-public class AbstractEntity {
+@Getter
+@Setter
+public abstract class AbstractEntity {
 
     /**
      * The unique identifier for the entity.
@@ -41,5 +44,9 @@ public class AbstractEntity {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
+    }
+
+    public Long getId() {
+        return id;
     }
 }

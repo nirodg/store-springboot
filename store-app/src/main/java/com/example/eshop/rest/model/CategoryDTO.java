@@ -2,12 +2,14 @@ package com.example.eshop.rest.model;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
-public class CategoryDTO {
-    private Long id;
+@Getter
+@Setter
+public class CategoryDTO extends AbstractEntityDTO{
     private String name;
     private String description;
     private String imageUrl;

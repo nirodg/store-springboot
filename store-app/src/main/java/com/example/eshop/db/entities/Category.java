@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Entity(name = "CCategory")
+@Entity(name = "Category")
 public class Category extends AbstractEntity {
 
     /**
