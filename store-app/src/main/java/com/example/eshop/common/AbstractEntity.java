@@ -1,7 +1,6 @@
-package com.example.eshop.db.common;
+package com.example.eshop.common;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

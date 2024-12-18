@@ -1,26 +1,26 @@
 package com.example.eshop.rest.mappers;
 
+import com.example.eshop.common.AbstractMapper;
 import com.example.eshop.db.entities.Address;
 import com.example.eshop.db.entities.Order;
 import com.example.eshop.rest.model.AddressDTO;
 import com.example.eshop.rest.model.OrderDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
 
 @Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface OrderMapper {
+public interface OrderMapper extends AbstractMapper<Order, OrderDTO> {
     // Map Order entity to OrderDTO
 //    @Mapping(source = "user.id", target = "userId") // Map User ID
 //    @Mapping(source = "deliveryAddress", target = "deliveryAddress", qualifiedByName = "mapAddress")
-    OrderDTO toDTO(Order order);
+//    OrderDTO toDTO(Order order);
 
     // Map OrderDTO back to Order entity
 //    @Mapping(target = "user", ignore = true) // Avoid circular reference
 //    @Mapping(target = "deliveryAddress", source = "deliveryAddress", qualifiedByName = "mapToAddressEntity")
-    Order toEntity(OrderDTO orderDTO);
+//    Order toEntity(OrderDTO orderDTO);
 
     // Helper method to map Address to AddressDTO
     @Named("mapAddress")

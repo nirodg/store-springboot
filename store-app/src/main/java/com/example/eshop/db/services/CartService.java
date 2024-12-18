@@ -1,19 +1,20 @@
 package com.example.eshop.db.services;
 
+import com.example.eshop.common.AbstractService;
 import com.example.eshop.db.entities.Cart;
 import com.example.eshop.db.entities.CartItem;
 import com.example.eshop.db.entities.Order;
 import com.example.eshop.db.entities.enums.OrderStatus;
 import com.example.eshop.db.repositories.CartRepository;
 import com.example.eshop.db.repositories.OrderRepository;
-import com.example.eshop.rest.common.AbstractCrudService;
+import com.example.eshop.rest.mappers.CartMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class CartService extends AbstractCrudService<Cart, Long> {
+public class CartService extends AbstractService<Cart, Long> {
 
     private final OrderRepository orderRepository;
 
@@ -62,4 +63,5 @@ public class CartService extends AbstractCrudService<Cart, Long> {
 
         return order;
     }
+
 }

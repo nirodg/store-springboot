@@ -1,8 +1,11 @@
 package com.example.eshop.rest.controllers;
 
+import com.example.eshop.common.AbstractMapper;
+import com.example.eshop.common.AbstractService;
 import com.example.eshop.db.entities.Cart;
 import com.example.eshop.db.entities.CartItem;
 import com.example.eshop.db.services.CartService;
+import com.example.eshop.common.AbstractController;
 import com.example.eshop.rest.mappers.CartMapper;
 import com.example.eshop.rest.model.CartDTO;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/carts")
-public class CartController {
+public class CartController extends AbstractController<Cart, CartDTO, Long> {
 
     private final CartService cartService;
     private final CartMapper cartMapper;
@@ -25,10 +28,7 @@ public class CartController {
     // Get the cart by user ID
     @GetMapping("/{userId}")
     public ResponseEntity<CartDTO> getCartByUserId(@PathVariable Long userId) {
-        return cartService.findByUserId(userId)
-                .map(cartMapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return cartService.findByUserId(userId).map(cartMapper::toDTO).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     // Add an item to the cart
@@ -43,10 +43,7 @@ public class CartController {
     public ResponseEntity<CartDTO> removeItemFromCart(@PathVariable Long userId, @PathVariable Long itemId) {
         cartService.removeItemFromCart(userId, itemId);
         Optional<Cart> updatedCart = cartService.findByUserId(userId);
-        return updatedCart
-                .map(cartMapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return updatedCart.map(cartMapper::toDTO).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     // Checkout the cart and place the order
@@ -54,5 +51,15 @@ public class CartController {
     public ResponseEntity<String> checkoutCart(@PathVariable Long userId) {
         cartService.checkout(userId);
         return ResponseEntity.ok("Cart checked out successfully and order placed.");
+    }
+
+    @Override
+    protected AbstractService<Cart, Long> service() {
+        return cartService;
+    }
+
+    @Override
+    protected AbstractMapper<Cart, CartDTO> mapper() {
+        return cartMapper;
     }
 }

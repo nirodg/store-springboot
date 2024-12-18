@@ -1,6 +1,9 @@
 package com.example.eshop.rest.controllers;
 
-import com.example.eshop.db.entities.Order;
+import com.example.eshop.common.AbstractController;
+import com.example.eshop.common.AbstractMapper;
+import com.example.eshop.common.AbstractService;
+import com.example.eshop.db.entities.User;
 import com.example.eshop.db.entities.enums.OrderStatus;
 import com.example.eshop.db.services.OrderService;
 import com.example.eshop.db.services.UserService;
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+public class UserController extends AbstractController<User, UserDTO, Long> {
 
     private final UserService userService;
     private final OrderService orderService;
@@ -29,13 +32,6 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    // Get all user details by user ID
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long userId) {
-        return userService.findById(userId)
-                .map(user -> ResponseEntity.ok(userMapper.toDTO(user)))
-                .orElse(ResponseEntity.notFound().build());
-    }
 
     // Get user order history (Completed Orders)
     @GetMapping("/{userId}/orders/history")
@@ -62,9 +58,18 @@ public class UserController {
     @GetMapping("/{userId}/orders/current")
     public ResponseEntity<Long> getCurrentOrder(@PathVariable Long userId) {
         return userService.findById(userId)
-                .map(user -> user.getCurrentOrder()) // Explicitly get the Order
-                .map(Order::getId) // Extract the ID from the Order object
+                .map(user -> user.getCurrentOrder().getId()) // Explicitly get the Order
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    protected AbstractService<User, Long> service() {
+        return userService;
+    }
+
+    @Override
+    protected AbstractMapper<User, UserDTO> mapper() {
+        return userMapper;
     }
 }

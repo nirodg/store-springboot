@@ -1,8 +1,7 @@
 package com.example.eshop.db.entities;
 
-import com.example.eshop.db.common.AbstractEntity;
+import com.example.eshop.common.AbstractEntity;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

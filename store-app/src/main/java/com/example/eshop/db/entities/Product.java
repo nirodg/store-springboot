@@ -1,10 +1,9 @@
 package com.example.eshop.db.entities;
 
-import com.example.eshop.db.common.AbstractEntity;
+import com.example.eshop.common.AbstractEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
