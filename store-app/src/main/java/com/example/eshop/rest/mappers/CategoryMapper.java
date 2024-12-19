@@ -6,19 +6,21 @@ import com.example.eshop.db.entities.Product;
 import com.example.eshop.rest.model.CategoryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.Named;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedSourcePolicy = ReportingPolicy.IGNORE, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface CategoryMapper extends AbstractMapper<Category, CategoryDTO> {
 
-////    @Mapping(source = "products", target = "productIds", qualifiedByName = "mapProductIds")
-//    CategoryDTO toDTO(Category category);
-//
-////    @Mapping(target = "products", ignore = true) // Avoid circular mapping
-//    Category toEntity(CategoryDTO categoryDTO);
+    @Mapping(source = "products", target = "productIds", qualifiedByName = "mapProductIds")
+    CategoryDTO toDTO(Category category);
 
+    // Avoid circular mapping
+    @Mapping(target = "products", ignore = true)
+    Category toEntity(CategoryDTO categoryDTO);
+
+    @Named("mapProductIds")
     default List<Long> mapProductIds(List<Product> products) {
         return products.stream().map(Product::getId).toList();
     }

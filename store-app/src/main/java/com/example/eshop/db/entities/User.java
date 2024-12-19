@@ -13,14 +13,6 @@ import java.util.List;
 @Table(name = "users") // Use "orders" instead of "order", since is a reserved keyword.
 public class User extends AbstractEntity {
 
-    /**
-     * The unique identifier for the entity.
-     * This field is automatically generated.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     @Column(unique = true, nullable = false)
     private String email;
 

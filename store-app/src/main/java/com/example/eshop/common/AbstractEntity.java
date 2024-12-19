@@ -20,6 +20,7 @@ public abstract class AbstractEntity {
      * The unique identifier for the entity.
      * This field is automatically generated.
      */
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -45,7 +46,4 @@ public abstract class AbstractEntity {
         updatedAt = new Date();
     }
 
-    public Long getId() {
-        return id;
-    }
 }

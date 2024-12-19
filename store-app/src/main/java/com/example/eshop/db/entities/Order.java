@@ -14,13 +14,6 @@ import java.util.Date;
 @Entity(name = "Order")
 @Table(name = "orders") // Use "orders" instead of "order", since is a reserved keyword.
 public class Order extends AbstractEntity {
-    /**
-     * The unique identifier for the entity.
-     * This field is automatically generated.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     /**
      * Reference to the user who owns this order.
