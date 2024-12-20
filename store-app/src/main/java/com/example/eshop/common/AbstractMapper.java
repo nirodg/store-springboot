@@ -1,5 +1,8 @@
 package com.example.eshop.common;
 
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +20,6 @@ public interface AbstractMapper<ENTITY, DTO> {
 //    Optional<DTO> toOptionalDTO(Optional<ENTITY> entity);
     List<DTO> toDTOs(List<ENTITY> entities);
 
+    @Mapping(target = "id", ignore = true)
+    void updateEntity(DTO dto, @MappingTarget ENTITY entity);
 }

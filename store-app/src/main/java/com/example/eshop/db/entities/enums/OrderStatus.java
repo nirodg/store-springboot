@@ -1,6 +1,7 @@
 package com.example.eshop.db.entities.enums;
 
 public enum OrderStatus {
+    CREATED,      // Order created but not yet paid
     PENDING,      // Order created but payment not yet confirmed
     PAID,         // Payment successful, waiting for fulfillment
     PROCESSING,   // Order is being processed (picked, packed, etc.)

@@ -5,7 +5,7 @@ import com.example.eshop.db.entities.Order;
 import com.example.eshop.db.entities.User;
 import com.example.eshop.db.entities.enums.OrderStatus;
 import com.example.eshop.db.services.OrderService;
-import com.example.eshop.rest.controllers.OrderController;
+import com.example.eshop.rest.controllers.admin.OrderController;
 import com.example.eshop.rest.mappers.OrderMapper;
 import com.example.eshop.rest.model.OrderDTO;
 import com.example.eshop.rest.model.enums.OrderStatusDTO;
@@ -19,9 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

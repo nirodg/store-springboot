@@ -2,6 +2,7 @@ package com.example.eshop.rest.mappers;
 
 import com.example.eshop.common.AbstractMapper;
 import com.example.eshop.db.entities.Order;
+import com.example.eshop.db.entities.User;
 import com.example.eshop.rest.model.OrderDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,7 +14,9 @@ public interface OrderMapper extends AbstractMapper<Order, OrderDTO> {
     OrderDTO toDTO(Order order);
 
     // Avoid circular reference
-    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "user", source = "userId")
     Order toEntity(OrderDTO orderDTO);
+
+    User map(Long value);
 
 }

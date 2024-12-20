@@ -22,4 +22,9 @@ public class UserService extends AbstractService<User, Long> {
     public Optional<User> findByEmail(String email) {
         return ((UserRepository) repository).findByEmail(email);
     }
+
+    public boolean existsById(Long userId) {
+        return repository.existsById(userId);
+    }
+
 }

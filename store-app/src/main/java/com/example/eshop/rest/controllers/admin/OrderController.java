@@ -1,4 +1,4 @@
-package com.example.eshop.rest.controllers;
+package com.example.eshop.rest.controllers.admin;
 
 
 import com.example.eshop.common.AbstractController;
