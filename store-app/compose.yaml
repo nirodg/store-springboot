@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=store'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_PASSWORD=dev'
+      - 'POSTGRES_USER=dev'
+    ports:
+      - '15432:5432'
+    networks:
+      - my-bridge-network
+
+  pgadmin:
+    image: 'dpage/pgadmin4'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'admin@admin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'admin'
+    ports:
+      - '8090:80'
+    depends_on:
+      - postgres
+    networks:
+      - my-bridge-network
+
+networks:
+  my-bridge-network:
+    driver: bridge
