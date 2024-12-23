@@ -1,14 +1,19 @@
 package com.example.eshop.rest.controllers;
 
+import com.example.eshop.db.entities.Category;
 import com.example.eshop.db.entities.Order;
+import com.example.eshop.db.entities.Product;
 import com.example.eshop.db.entities.User;
 import com.example.eshop.db.entities.enums.OrderStatus;
-import com.example.eshop.db.services.OrderService;
-import com.example.eshop.db.services.UserService;
+import com.example.eshop.db.services.*;
+import com.example.eshop.rest.mappers.CategoryMapper;
 import com.example.eshop.rest.mappers.OrderMapper;
+import com.example.eshop.rest.mappers.ProductMapper;
 import com.example.eshop.rest.mappers.UserMapper;
 import com.example.eshop.rest.model.OrderDTO;
+import com.example.eshop.rest.model.ProductDTO;
 import com.example.eshop.rest.model.UserDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,12 +35,121 @@ public class ApiV1Controller {
     private final UserMapper userMapper;
     private final OrderService orderService;
     private final OrderMapper orderMapper;
+    private final ProductService productService;
+    private final ProductMapper productMapper;
+    private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
+    private final CartService cartService;
 
-    public ApiV1Controller(UserService userService, UserMapper userMapper, OrderService orderService, OrderMapper orderMapper) {
+    public ApiV1Controller(UserService userService, UserMapper userMapper, OrderService orderService, OrderMapper orderMapper,
+                           ProductService productService, ProductMapper productMapper,
+                           CategoryService categoryService, CategoryMapper categoryMapper,
+                           CartService cartService) {
         this.userService = userService;
         this.userMapper = userMapper;
         this.orderService = orderService;
         this.orderMapper = orderMapper;
+        this.productService = productService;
+        this.productMapper = productMapper;
+        this.categoryService = categoryService;
+        this.categoryMapper = categoryMapper;
+        this.cartService = cartService;
+    }
+
+    /**
+     * Creates a new product.
+     *
+     * @param productDTO the product data to create
+     * @return the created ProductDTO
+     */
+    @PostMapping("/products")
+    public ResponseEntity<ProductDTO> createNewProduct(@RequestBody ProductDTO productDTO) {
+        // Convert DTO to entity
+        Product product = productMapper.toEntity(productDTO);
+        product.setCategory(
+                productDTO.getCategoryId() != null
+                        ? categoryService.findById(productDTO.getCategoryId())
+                        .orElseThrow(() -> new IllegalArgumentException("Category not found"))
+                        : null
+        );
+        Product savedProduct = productService.save(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productMapper.toDTO(savedProduct));
+    }
+
+    /**
+     * Retrieves all products regardless of their category.
+     *
+     * @return a list of all ProductDTOs
+     */
+    @GetMapping("/products")
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        return ResponseEntity.ok(productMapper.toDTOs(productService.findAll()));
+    }
+
+
+    /**
+     * Retrieves all products for a specific category.
+     *
+     * @param categoryId the ID of the category
+     * @return a list of ProductDTOs within the specified category
+     */
+    @GetMapping("/categories/{categoryId}/products")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable Long categoryId) {
+        Category category = categoryService.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        return ResponseEntity.ok(productMapper.toDTOs(productService.findAllByCategory(category)));
+    }
+
+    /**
+     * Retrieves a specific product by its ID.
+     *
+     * @param productId the ID of the product
+     * @return the ProductDTO of the specified product
+     */
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long productId) {
+        Product product = productService.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        return ResponseEntity.ok(productMapper.toDTO(product));
+    }
+
+    /**
+     * Deleting a specific product by its ID.
+     *
+     * @param id the ID of the product
+     * @return a ResponseEntity indicating the operation result
+     */
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Updates an existing product.
+     *
+     * @param id         the ID of the product to update
+     * @param productDTO the updated product data
+     * @return the updated ProductDTO
+     */
+    @PutMapping("/products/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        Optional<Product> existingProduct = productService.findById(id);
+        if (existingProduct.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        productMapper.updateEntity(productDTO, existingProduct.get());
+        // Map the updated data to the existing product
+        existingProduct.get().setCategory(
+                productDTO.getCategoryId() != null
+                        ? categoryService.findById(productDTO.getCategoryId())
+                        .orElseThrow(() -> new IllegalArgumentException("Category not found"))
+                        : null
+        );
+
+        Product updatedProduct = productService.save(existingProduct.get());
+        return ResponseEntity.ok(productMapper.toDTO(updatedProduct));
     }
 
     /**
